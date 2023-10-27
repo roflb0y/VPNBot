@@ -7,3 +7,7 @@ export const log = (msg: string) => {
 export const debug = (msg: string) => {
     console.log(chalk.magentaBright(`[${new Date().toLocaleString()}] DEBUG: ${msg}`));
 }
+
+export const error = (msg: string | Error | any) => {
+    console.log(chalk.redBright(`[${new Date().toLocaleString()}] ERROR: ${msg}`))
+}

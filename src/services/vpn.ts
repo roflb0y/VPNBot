@@ -5,6 +5,9 @@ import * as utils from "./utils";
 import { VPNServer } from "./interface";
 import * as log from "./logger";
 
+process.on("unhandledRejection", (error) => log.error(error));
+process.on("uncaughtException", (error) => log.error(error));
+
 async function getVpnServer(region: string): Promise<VPNServer> {
     const config = utils.getConfig();
     const servers = utils.getAllVPNServers();
@@ -62,7 +65,8 @@ export async function searchUserRegion(name: string, region: string) {
 
         const outlinevpn = new OutlineVPN({
             apiUrl: server.apiUrl,
-            fingerprint: server.certSha256
+            fingerprint: server.certSha256,
+            timeout: 5000
         });
 
         const users = await outlinevpn.getUsers();

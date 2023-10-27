@@ -22,7 +22,7 @@ bot.on(message("text"), async (ctx) => {
     }
 
     else if (ctx.message.text == "Создать ключ") {
-        await ctx.reply("Выберите регион", inlineMarkups.vpnRegionButtons);
+        await ctx.reply("Выберите регион", inlineMarkups.vpnRegionButtons());
         return;
     }
 })
