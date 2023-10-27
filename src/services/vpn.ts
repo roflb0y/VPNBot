@@ -23,7 +23,7 @@ async function getVpnServer(region: string): Promise<VPNServer> {
         log.debug(`${users.length} users`);
         log.debug("");
 
-        if (users.length <= config.SERVER_LIMIT) return server;
+        if (users.length < config.SERVER_LIMIT) return server;
     }
 
     return servers[region][0];
