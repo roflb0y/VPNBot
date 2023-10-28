@@ -32,33 +32,20 @@ async function getVpnServer(region: string): Promise<VPNServer> {
     return servers[region][0];
 }
 
-export async function searchUser(name: string) {
+export async function searchUser(name: string): Promise<{ user: User, server: VPNServer } | undefined> {
     const servers = utils.getAllVPNServers();
 
     for(let i = 0; i < Object.keys(servers).length; i++) {
-        const regionServers = servers[Object.keys(servers)[i]];
+        const region = Object.keys(servers)[i];
 
-        for(let j = 0; j < regionServers.length; j++) {
-            const server = regionServers[j];
-            log.debug(`Searching for ${name} in ${server.name}`);
-
-            const outlinevpn = new OutlineVPN({
-                apiUrl: server.apiUrl,
-                fingerprint: server.certSha256
-            });
-
-            const users = await outlinevpn.getUsers();
-            const user = users.filter((item) => item.name === name);
-            if (user.length !== 0) return { "user": user[0], "server": server };
-        }
+        const user = await searchUserRegion(name, region);
+        return user;
     }
-    return undefined;
 }
 
-export async function searchUserRegion(name: string, region: string) {
+export async function searchUserRegion(name: string, region: string): Promise<{ user: User, server: VPNServer } | undefined> {
     const servers = utils.getAllVPNServers()[region];
 
-    //im lazy
     for(let j = 0; j < servers.length; j++) {
         const server = servers[j];
         log.debug(`Searching for ${name} in ${server.name}`);
